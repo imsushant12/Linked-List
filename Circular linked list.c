@@ -7,20 +7,20 @@ struct node
     int info;
     struct node *next;
 };
-struct node *last=NULL;
+struct node *last = NULL;
 
 void viewList()
 {
-    if(last==NULL)
+    if(last == NULL)
         printf("\nList is empty\n");
     else
     {
         struct node *temp;
-        temp=last->next;
+        temp = last->next;
         do
         {
-            printf("%d ",temp->info);
-            temp->next;
+            printf("\nData = %d",temp->info);
+            temp = temp->next;
         }while(temp!=last->next);
     }
 }
@@ -29,122 +29,150 @@ void addatbeg()
 {
     int data;
     struct node *temp;
-    printf("\nEnter data to be entered\n");
+    temp = (struct node*)malloc(sizeof(struct node));
+    printf("\nEnter data to be inserted : \n");
     scanf("%d",&data);
-    temp->info=data;
-    temp->next=last->next;
-    last->next=temp;
+    if(last == NULL)
+    {
+        temp->info = data;
+        temp->next = temp;
+        last = temp;
+    }
+    else
+    {
+        temp->info=data;
+        temp->next = last->next;
+        last->next = temp;
+    }
 }
 
 void addatlast()
 {
     int data;
     struct node *temp;
-    temp=malloc(sizeof(struct node));
-    printf("\nEnter data to be entered\n");
+    temp = (struct node*)malloc(sizeof(struct node));
+    printf("\nEnter data to be inserted : \n");
     scanf("%d",&data);
-    temp->info=data;
-    temp->next=last->next;
-    last->next=temp;
-    last=temp;
+    if(last == NULL)
+    {
+        temp->info = data;
+        temp->next = temp;
+        last = temp;
+    }
+    else
+    {
+        temp->info = data;
+        temp->next = last->next;
+        last->next = temp;
+        last = temp;
+    }
 }
 
 void insertafter()
 {
     int data,value;
     struct node *temp,*n;
-    printf("\nEnter number after which you want to enter number\n");
-    scanf("%d ",&value);
-    temp=last->next;
+    printf("\nEnter number after which you want to enter number : \n");
+    scanf("%d",&value);
+    temp = last->next;
     do
     {
-        if(temp->info==value)
+        if(temp->info == value)
         {
-            n=malloc(sizeof(struct node));
-            printf("\nEnter data to be entered\n");
-            scanf("%d ",&data);
-            n->info=data;
-            n->next=temp->next;
-            temp->next=n;
-            if(temp==last)
-                last=n;
+            n = (struct node*)malloc(sizeof(struct node));
+            printf("\nEnter data to be inserted : \n");
+            scanf("%d",&data);
+            n->info = data;
+            n->next = temp->next;
+            temp->next = n;
+            if(temp == last)
+                last = n;
             break;
         }
-        temp=temp->next;
-        }while(temp!=last->next);
-    printf("\n%d is not in the list\n");
+        else
+            break;
+        temp = temp->next;
+    }while(temp != last->next);
 }
 
-void del()
+void deletefirst()
 {
-    int value;
-    struct node *temp,*trav;
-    printf("\nEnter value to be deleted\n");
-    scanf("%d",&value);
-    if(last==NULL)
-        printf("\nList is empty\n");
-    if(last==last->next)
+    struct node *temp;
+    if(last == NULL)
+        printf("\nList is empty.\n");
+    else
     {
-        if(last->info==value)
-        {
-            temp=last;
-            last=NULL;
-            free(temp);
-        }
-    }
-    if(last->next->info==value)
-    {
-        temp=last->next;
-        last->next=temp->next;
+        temp = last->next;
+        last->next = temp->next;
         free(temp);
     }
-    temp=last->next;
-    while(temp->next!=last)
-    {
-        if(temp->next->info==value)
-        {
-            trav=temp->next;
-            temp->next=trav->next;
-            free(trav);
-        }
+}
 
-        if(last->info==value)
+void deletelast()
+{
+    struct node *temp;
+    if(last == NULL)
+        printf("\nList is empty.\n");
+
+    temp = last->next;
+    while(temp->next != last)
+        temp=temp->next;
+
+    temp->next = last->next;
+    last = temp;
+}
+
+void deleteafter()
+{
+    int pos,i=1;
+    struct node *temp,*position;
+    temp = last->next;
+    if(last == NULL)
+        printf("\nList is empty.\n");
+    else
+    {
+        printf("\nEnter index : ");
+        scanf("%d",&pos);
+        while(i <= pos-1)
         {
-            trav=last;
-            temp->next=last->next;
-            last=temp;
-            free(trav);
+            temp = temp->next;
+            i++;
         }
+        position = temp->next;
+        temp->next = position->next;
+
+        free(position);
     }
-    printf("\n Not found %d ",value);
 }
 
 void create()
 {
     int n,i,data;
-    printf("\nEnter number of elements to be entered\n");
+    printf("\nEnter number of elements to be entered : \n");
     scanf("%d",&n);
     addatbeg();
-    for(i=2;i<=n;i++)
+    for(i=2 ; i <= n ; i++)
     {
         addatlast();
     }
 }
 
 
-main()
+int main()
 {
     int choice;
     while(1)
     {
-        printf("\nEnter your choice : \n");
-        printf("\t1 To view list\n");
-        printf("\t2 For insertion at starting\n");
-        printf("\t3 For insertion at end\n");
-        printf("\t4 For insertion at any position\n");
-        printf("\t5 For deletion of an element\n");
-        printf("\t6 For creation of list\n");
-        printf("\t7 To exit\n");
+        printf("\n1 To view list\n");
+        printf("2 For insertion at starting\n");
+        printf("3 For insertion at end\n");
+        printf("4 For insertion at any position\n");
+        printf("5 For deletion at starting\n");
+        printf("6 For deletion at end\n");
+        printf("7 For deletion at any position\n");
+        printf("8 For creation of list\n");
+        printf("9 To exit\n");
+        printf("Enter your choice :");
         scanf("%d",&choice);
         switch(choice)
         {
@@ -161,18 +189,28 @@ main()
                 insertafter();
                 break;
         case 5:
-               del();
+               deletefirst();
                break;
+
         case 6:
+               deletelast();
+               break;
+
+        case 7:
+               deleteafter();
+               break;
+
+        case 8:
                 create();
                 break;
-        case 7:
+        case 9:
                 exit(1);
                 break;
         default:
             printf("Incorrect Choice\n");
         }
     }
+    return 0;
 }
 
 /*
